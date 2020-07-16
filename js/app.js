@@ -1,42 +1,3 @@
-const container = document.querySelector(".container")
-const coffees = [
-  { name: "01", image: "images/thumbs/01.jpg" },
-  { name: "02", image: "images/thumbs/02.jpg" },
-  { name: "03", image: "images/thumbs/03.jpg" },
-  { name: "04", image: "images/thumbs/04.jpg" },
-  { name: " 05", image: "images/thumbs/05.jpg" },
-  { name: " 06", image: "mages/thumbs/06.jpg" },
-  { name: "07", image: "mages/thumbs/07.jpg" },
-  { name: "avatar", image: "mages/thumbs/avatar.jpg" },
-  { name: "bg", image: "mages/thumbs/bg.jpg" },
-]
-
-const showCoffees = () => {
-  let output = ""
-  coffees.forEach(
-    ({ name, image }) =>
-      (output += `
-              <div class="card">
-                <img class="card--avatar" src=${image} />
-                <h1 class="card--title">${name}</h1>
-                <a class="card--link" href="#">Taste</a>
-              </div>
-              `)
-  )
-  container.innerHTML = output
-}
-
-document.addEventListener("DOMContentLoaded", showCoffees)
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", function() {
-    navigator.serviceWorker
-      .register("/serviceWorker.js")
-      .then(res => console.log("service worker registered"))
-      .catch(err => console.log("service worker not registered", err))
-  })
-}
-
 var slideIndex = 0;
 carousel();
 
@@ -62,3 +23,83 @@ function myFunction() {
     x.style.display = "block";
   }
 }
+
+
+var CACHE_NAME = 'my-site-cache-v1';
+var urlsToCache = [
+  '/',
+  '/styles/main.css',
+  '/script/main.js'
+];
+
+self.addEventListener('install', function(event) {
+  // Perform install steps
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(function(cache) {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
+  );
+});
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request)
+      .then(function(response) {
+        // Cache hit - return response
+        if (response) {
+          return response;
+        }
+
+        return fetch(event.request).then(
+          function(response) {
+            // Check if we received a valid response
+            if(!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+
+            // IMPORTANT: Clone the response. A response is a stream
+            // and because we want the browser to consume the response
+            // as well as the cache consuming the response, we need
+            // to clone it so we have two streams.
+            var responseToCache = response.clone();
+
+            caches.open(CACHE_NAME)
+              .then(function(cache) {
+                cache.put(event.request, responseToCache);
+              });
+
+            return response;
+          }
+        );
+      })
+    );
+});
+
+self.addEventListener('activate', function(event) {
+
+  var cacheWhitelist = ['pages-cache-v1', 'blog-posts-cache-v1'];
+
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.map(function(cacheName) {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
+
+fetch(url, {
+  credentials: 'include'
+})
+
+cache.addAll(urlsToPrefetch.map(function(urlToPrefetch) {
+  return new Request(urlToPrefetch, { mode: 'no-cors' });
+})).then(function() {
+  console.log('All resources have been fetched and cached.');
+});
