@@ -17,6 +17,9 @@
 		font-size: 100%;
 		font: inherit;
 		vertical-align: baseline;
+	}
+
+	body {
 		overflow-x: hidden;
 	}
 
@@ -1405,6 +1408,7 @@
 
 		html, body {
 			min-width: 320px;
+			overflow-x: hidden;
 		}
 
 	}
