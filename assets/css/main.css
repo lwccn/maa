@@ -2856,3 +2856,15 @@ h3 {
   background: #fff;
   border-radius: 8px;
 }
+
+.rotate {
+  border-radius: 50%;
+  -webkit-transition: -webkit-transform .8s ease-in-out;
+          transition:         transform .8s ease-in-out;
+          animation-iteration-count: infinite;
+}
+.rotate:hover {
+  -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+          animation-iteration-count: infinite;
+}
