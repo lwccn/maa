@@ -2648,8 +2648,8 @@
 {
   display: block;
   position: relative;
-  top: 50px;
-  left: 50px;
+  top: 5px;
+  left: 15px;
   
   z-index: 1;
   
@@ -2757,7 +2757,7 @@
   width: 300px;
   margin: -100px 0 0 -50px;
   padding: 50px;
-  padding-top: 125px;
+  padding-top: 90px;
   
   background: transparent;
   list-style-type: none;
@@ -2772,8 +2772,7 @@
 
 #menu li
 {
-  padding: 10px 0;
-  font-size: 22px;
+  font-size: 15px;
 }
 
 /*
