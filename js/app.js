@@ -103,3 +103,5 @@ cache.addAll(urlsToPrefetch.map(function(urlToPrefetch) {
 })).then(function() {
   console.log('All resources have been fetched and cached.');
 });
+
+
